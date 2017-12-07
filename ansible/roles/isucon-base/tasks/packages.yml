@@ -4,7 +4,5 @@
   with_items:
     - libmysqlclient-dev
     - nodejs
-    - nodejs-legacy
-    - vim
     - git
 

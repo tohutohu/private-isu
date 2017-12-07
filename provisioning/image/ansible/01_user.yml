@@ -3,11 +3,15 @@
 #- hosts: extras
   gather_facts: no
   become: yes
+  vars:
+    - password: $1$6ZicICV/$aVFm3i2oQyPuI9NhyKB2c0
   tasks:
     - name: change timezone to JST
       shell: cp -p /usr/share/zoneinfo/Japan /etc/localtime
     - group: name=wheel
-    - user: name=isucon groups=wheel shell=/bin/bash
+    - user: name=isucon groups=wheel shell=/bin/bash password={{password}}
+    - copy: src=../files/sshd_config dest=/etc/ssh/ssh_config 
+    - service: name=sshd state=restarted enabled=yes
     - copy: src=../files/etc/profile.d/bashrc dest=/home/isucon/.profile owner=isucon mode=755
     - name: create .ssh
       file: path=/home/isucon/.ssh/ state=directory owner=isucon group=isucon mode=755
